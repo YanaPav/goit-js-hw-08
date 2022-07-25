@@ -25,12 +25,7 @@ function onFormInput(e) {
         formData.message = value
     }    
 
-    saveToLocalStorage(formData) 
-}
-
-function saveToLocalStorage(data) {
-    savedFormData = JSON.stringify(data)
-    localStorage.setItem("feedback-form-state", savedFormData)
+    localStorage.setItem("feedback-form-state", JSON.stringify(formData))
 }
 
 function onFormSubmit(e) {
