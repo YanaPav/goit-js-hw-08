@@ -12,7 +12,6 @@ messageEl.value = storageData ? storageData.message : ""
 form.addEventListener('input', throttle(onFormInput, 500))
 form.addEventListener('submit', onFormSubmit)
 
-
 const formData = {
     email: '',
     message: ''
