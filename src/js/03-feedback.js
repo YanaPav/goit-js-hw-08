@@ -1,29 +1,17 @@
 
 import throttle from "lodash.throttle"
 const form = document.querySelector('.feedback-form')
-const emailEl = document.querySelector('[name="email"]')
-const messageEl = document.querySelector('[name="message"]')
 
-const storageData = JSON.parse(localStorage.getItem("feedback-form-state"))
-
-emailEl.value = storageData ? storageData.email : ""
-messageEl.value = storageData ? storageData.message : ""
-    
 form.addEventListener('input', throttle(onFormInput, 500))
 form.addEventListener('submit', onFormSubmit)
 
-const formData = {
-    email: '',
-    message: ''
-}
+let formData = {}
+
+initForm() 
 
 function onFormInput(e) {
     const {name, value} = e.target    
-    if (name === "email") {
-        formData.email =value
-    } else if (name === "message") {
-        formData.message = value
-    }    
+    formData[name] = value
 
     localStorage.setItem("feedback-form-state", JSON.stringify(formData))
 }
@@ -31,8 +19,30 @@ function onFormInput(e) {
 function onFormSubmit(e) {
     e.preventDefault()
 
+    const emailValue = e.currentTarget.elements.email.value
+    const messageValue = e.currentTarget.elements.message.value
+
+
+    if (!emailValue || !messageValue) {
+        console.log('All fields must be filled')
+        return
+    }
+
     console.log(formData)
-    localStorage.clear()
+    localStorage.removeItem('feedback-form-state')
     form.reset()
+    formData = {}
+}
+
+function initForm() {
+    let storageData = localStorage.getItem("feedback-form-state")
+    if (storageData) {
+        storageData = JSON.parse(storageData)
+        Object.entries(storageData).forEach(([name, value]) => {
+            form.elements[name].value = value
+            formData[name] = value
+        })
+    }
+
 }
 
