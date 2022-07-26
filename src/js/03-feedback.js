@@ -4,6 +4,7 @@ const form = document.querySelector('.feedback-form')
 
 form.addEventListener('input', throttle(onFormInput, 500))
 form.addEventListener('submit', onFormSubmit)
+const LOCAL_STORAGE_KEY = "feedback-form-state"
 
 // let formData = {}
 
@@ -12,10 +13,10 @@ initForm()
 function onFormInput(e) {
     const {name, value} = e.target    
     
-    let storageData = localStorage.getItem("feedback-form-state")
+    let storageData = localStorage.getItem(LOCAL_STORAGE_KEY)
     storageData = storageData ? JSON.parse(storageData) : {}
     storageData[name] = value
-    localStorage.setItem("feedback-form-state", JSON.stringify(storageData))
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storageData))
 }
 
 function onFormSubmit(e) {
@@ -30,14 +31,14 @@ function onFormSubmit(e) {
         return
     }
 
-    console.log(JSON.parse(localStorage.getItem('feedback-form-state')))
-    localStorage.removeItem('feedback-form-state')
+    console.log(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)))
+    localStorage.removeItem(LOCAL_STORAGE_KEY)
     form.reset()
     // formData = {}
 }
 
 function initForm() {
-    let storageData = localStorage.getItem("feedback-form-state")
+    let storageData = localStorage.getItem(LOCAL_STORAGE_KEY)
     if (storageData) {
         storageData = JSON.parse(storageData)
         Object.entries(storageData).forEach(([name, value]) => {
