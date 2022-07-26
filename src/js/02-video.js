@@ -16,17 +16,6 @@ function onPlayVideo(e) {
 const savedTime = localStorage.getItem("videoplayer-current-time") || 0
 console.log(savedTime)
 
-player.setCurrentTime(savedTime).then(
-    player.play())
-    .catch(function (error) {
-    switch (error.name) {
-        case 'RangeError':
-            break;
-
-        default:
-            console.log(error.name)
-            break;
-    }
-});
+player.setCurrentTime(savedTime)
 
 window.addEventListener('load', (e) => player.play())
