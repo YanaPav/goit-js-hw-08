@@ -5,15 +5,17 @@ const form = document.querySelector('.feedback-form')
 form.addEventListener('input', throttle(onFormInput, 500))
 form.addEventListener('submit', onFormSubmit)
 
-let formData = {}
+// let formData = {}
 
 initForm() 
 
 function onFormInput(e) {
     const {name, value} = e.target    
-    formData[name] = value
-
-    localStorage.setItem("feedback-form-state", JSON.stringify(formData))
+    
+    let storageData = localStorage.getItem("feedback-form-state")
+    storageData = storageData ? JSON.parse(storageData) : {}
+    storageData[name] = value
+    localStorage.setItem("feedback-form-state", JSON.stringify(storageData))
 }
 
 function onFormSubmit(e) {
@@ -28,10 +30,10 @@ function onFormSubmit(e) {
         return
     }
 
-    console.log(formData)
+    console.log(JSON.parse(localStorage.getItem('feedback-form-state')))
     localStorage.removeItem('feedback-form-state')
     form.reset()
-    formData = {}
+    // formData = {}
 }
 
 function initForm() {
@@ -40,7 +42,7 @@ function initForm() {
         storageData = JSON.parse(storageData)
         Object.entries(storageData).forEach(([name, value]) => {
             form.elements[name].value = value
-            formData[name] = value
+            // formData[name] = value
         })
     }
 
